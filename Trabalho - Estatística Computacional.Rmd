@@ -25,6 +25,8 @@ editor_options:
 
 ## 1. Introdução
 
+Olá mundo!
+
 ## 2. Desenvolvimento
 
 ```{r}
