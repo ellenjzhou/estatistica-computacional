@@ -30,6 +30,22 @@ Olá mundo!
 ## 2. Desenvolvimento
 
 ```{r}
+print("Hello, world!")
+```
+
+```{r rascunhos_simulacao}
+
+N <- 1E3
+n <- 10000
+x <- replicate(N, max(rcauchy(n)))
+qqnorm(x)
+quantis_gumbel <- -log(-log((1:N)/(N+1)))
+plot(quantis_gumbel, sort(x))
+qqplot(quantis_gumbel,x)
+
+y <- replicate(N,mean(rcauchy(n)))
+min(y)
+
 
 ```
 
