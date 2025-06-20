@@ -1,5 +1,5 @@
 ---
-title: "Teoria de valores extremos"
+title: "Extremos"
 author: 
   - name: Ellen Jieyi Zhou
   - name: Leonardo Gonçalves Fischer
@@ -25,30 +25,32 @@ editor_options:
 
 ## 1. Introdução (descrição e fundamentos para resolução)
 
-Seja uma amostra aleatória $(Y_1, Y_2, ..., Y_n)$ de uma população com distribuição comum $F_Y(y)$ Sabe-se que para amostras suficientemente grandes e algumas condições de regularidade a distribuição amostral da média $\bar Y$
-converge para uma distribuição normal, indiferentemente da distribuição
-$F_Y(y)$ da variável. Mas o que acontece com a distribuição do máximo
-$Y_M = \text{max}(Y_1, Y_2, ..., Y_n)$?
+Seja uma amostra aleatória $(Y_1, Y_2, ..., Y_n)$ de uma população com distribuição comum $F$. Sabe-se que para amostras suficientemente grandes e certas condições de regularidade a distribuição amostral da média $\bar Y$
+converge para uma distribuição normal, indiferentemente da distribuição $F$ da variável. Mas o que acontece com a distribuição do máximo
+$Y_M = \text{max}(Y_1, Y_2, ..., Y_n)$ quando $n \to \infty$?
 
 Estudar o comportamento do máximo pode ser útil em diversos contextos,
 particularmente no cenário ambiental, em que há interesse em estimar os
 valores máximos de temperatura, nível de poluição ou precipitação por
-exemplo. Esse tema é abordado na *teoria de valores extremos*.
+exemplo. 
 
-Nesse sentido, é intuitivo obter a distribuição de $Y_M$ a partir da distribuição $F_Y(y)$ da variável:
+Nesse sentido, é intuitivo obter a distribuição do máximo a partir da distribuição $F_Y(y)$ da variável:
 
 $$
 \begin{align*}
 P(Y_M \leq y) &= P(Y_1 \leq y, ..., Y_n \leq y) \\
 &= P(Y_1 \leq y)...P(Y_n \leq y) \ \ \ (Y_1,...,Y_n \ \ \text{independentes})\\
-&= \{F_Y(y)\}^n
-\end{align*}
+&= \{F(y)\}^n \tag{1}
+\end{align*} 
 $$
 
-Nesse trabalho, serão realizadas explorações computacionais desses
+Entretanto, há situações em que a equação em (1) é difícil de ser obtida analiticamente, como no caso da distribuição Normal. Além disso, nem sempre $F$ e/ou seus parâmetros são conhecidos, e estimá-los poderia levar a erros significativos. Desse modo, estimar a distribuição de $Y_M$ diretamente, desconsiderando a distribuição da população, é mais adequado.
+
+Então, para qual distribuição o máximo converge quando $n \to \infty$?
+O tema é abordado na *teoria de valores extremos*. Nesse trabalho, serão realizadas explorações computacionais desses
 conceitos.
 
-## 2. Desenvolvimento
+## 2. Experimentos computacionais
 
 ```{r rascunhos_simulacao}
 
