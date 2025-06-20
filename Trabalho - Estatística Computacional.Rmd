@@ -23,9 +23,30 @@ editor_options:
     wrap: 72
 ---
 
-## 1. Introdução
+## 1. Introdução (descrição e fundamentos para resolução)
 
+Seja uma amostra aleatória $(Y_1, Y_2, ..., Y_n)$ de uma população com distribuição comum $F_Y(y)$ Sabe-se que para amostras suficientemente grandes e algumas condições de regularidade a distribuição amostral da média $\bar Y$
+converge para uma distribuição normal, indiferentemente da distribuição
+$F_Y(y)$ da variável. Mas o que acontece com a distribuição do máximo
+$Y_M = \text{max}(Y_1, Y_2, ..., Y_n)$?
 
+Estudar o comportamento do máximo pode ser útil em diversos contextos,
+particularmente no cenário ambiental, em que há interesse em estimar os
+valores máximos de temperatura, nível de poluição ou precipitação por
+exemplo. Esse tema é abordado na *teoria de valores extremos*.
+
+Nesse sentido, é intuitivo obter a distribuição de $Y_M$ a partir da distribuição $F_Y(y)$ da variável:
+
+$$
+\begin{align*}
+P(Y_M \leq y) &= P(Y_1 \leq y, ..., Y_n \leq y) \\
+&= P(Y_1 \leq y)...P(Y_n \leq y) \ \ \ (Y_1,...,Y_n \ \ \text{independentes})\\
+&= \{F_Y(y)\}^n
+\end{align*}
+$$
+
+Nesse trabalho, serão realizadas explorações computacionais desses
+conceitos.
 
 ## 2. Desenvolvimento
 
