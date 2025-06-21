@@ -23,20 +23,24 @@ editor_options:
     wrap: 72
 ---
 
-## 1. Introdução 
+## 1. Introdução
 
-Seja uma amostra aleatória $(Y_1, Y_2, ..., Y_n)$ de uma população com distribuição comum $F$. Sabe-se que para amostras suficientemente grandes e certas condições de regularidade a distribuição amostral da média $\bar Y$
-converge para uma distribuição normal, indiferentemente da distribuição $F$ da variável. Mas o que acontece com a distribuição do máximo
-$Y_M = \text{max}(Y_1, Y_2, ..., Y_n)?$
+Seja uma amostra aleatória $(Y_1, Y_2, ..., Y_n)$ de uma população com
+distribuição comum $F$. Sabe-se que para amostras suficientemente
+grandes e certas condições de regularidade a distribuição amostral da
+média $\bar Y$ converge para uma distribuição normal, indiferentemente
+da distribuição $F$ da variável. Mas o que acontece com a distribuição
+do máximo $Y_M = \text{max}(Y_1, Y_2, ..., Y_n)?$
 
 Estudar o comportamento do máximo pode ser útil em diversos contextos,
 particularmente no cenário ambiental, em que há interesse em estimar os
 valores máximos de temperatura, nível de poluição e precipitação por
-exemplo. 
+exemplo.
 
 ### 1.1 Justificativa
 
-Nesse sentido, é intuitivo obter a distribuição do máximo a partir da distribuição $F$ da variável:
+Nesse sentido, é intuitivo obter a distribuição do máximo a partir da
+distribuição $F$ da variável:
 
 $$
 \begin{align*}
@@ -46,30 +50,49 @@ P(Y_M \leq y) &= P(Y_1 \leq y, ..., Y_n \leq y) \\
 \end{align*} 
 $$
 
-Entretanto, há situações em que a equação em (1) é difícil de ser obtida analiticamente, como no caso da distribuição Normal. Além disso, nem sempre $F$ e/ou seus parâmetros são conhecidos, e estimá-los poderia levar a erros significativos. Desse modo, estimar a distribuição de $Y_M$ diretamente, desconsiderando a distribuição da população, é mais adequado.
+Entretanto, há situações em que a equação em (1) é difícil de ser obtida
+analiticamente, como no caso da distribuição Normal. Além disso, nem
+sempre $F$ e/ou seus parâmetros são conhecidos, e estimá-los poderia
+levar a erros significativos. Desse modo, estimar a distribuição de
+$Y_M$ diretamente, desconsiderando a distribuição da população, é mais
+adequado.
 
 ### 1.2 Distribuição amostral do máximo
 
-Então, qual a distribuição amostral do máximo? Seria a distribuição Normal? Para verificar isso o seguinte algoritmo pode ser usado:
+Então, qual a distribuição amostral do máximo? Seria a distribuição
+Normal? Para verificar isso o seguinte algoritmo pode ser usado:
 
-1. Gere uma amostra de tamanho n da distribuição Normal(0,1).
-2. Obtenha o valor máximo da amostra.
-3. Repita os passos 1 e 2 muitas vezes.
-4. Analise o comportamento da distribuição amostral do máximo, usando qq-plots (qq-norm).
+1.  Gere uma amostra de tamanho n da distribuição Normal(0,1).
+2.  Obtenha o valor máximo da amostra.
+3.  Repita os passos 1 e 2 muitas vezes.
+4.  Analise o comportamento da distribuição amostral do máximo, usando
+    qq-plots (qq-norm).
 
-O algoritmo será usado para diferentes tamanhos de amostra (n = 10, n = 100, n = 1000 e n = 10000), a fim de averiguar se as distribuições amostrais se aproximam da normalidade para valores crescentes de n. No fim, será demonstrado que a distribuição amostral do máximo $Y_M$ não é normal, possuindo uma assimetria positiva significativa. 
+O algoritmo será usado para diferentes tamanhos de amostra (n = 10, n =
+100, n = 1000 e n = 10000), a fim de averiguar se as distribuições
+amostrais se aproximam da normalidade para valores crescentes de n. No
+fim, será demonstrado que a distribuição amostral do máximo $Y_M$ não é
+normal, possuindo uma assimetria positiva significativa.
 
 ### 1.3 Distribuição de Gumbel
 
-Nesse contexto, uma aproximação melhor é dada pela distribuição de *Gumbel*, que faz parte de uma família de distribuições conhecida como *distribuição de valor extremo generalizado*, e tem expressão da acumulada dada por
+Nesse contexto, uma aproximação melhor é dada pela distribuição de
+*Gumbel*, que faz parte de uma família de distribuições conhecida como
+*distribuição de valor extremo generalizado*, e tem expressão da
+acumulada dada por
 
 $$
 F_G(t;a,b) = \text{exp}\left\{- \text{exp} \left(-\frac{t-\mu}{\beta} \right) \right\},
 $$
 
-em que $\mu$ e $\beta$ são os parâmetros de locação e escala análogos à média e desvio padrão da normal. 
+em que $\mu$ e $\beta$ são os parâmetros de locação e escala análogos à
+média e desvio padrão da normal.
 
-Para confirmar que a Gumbel se aproxima melhor como distribuição amostral do máximo, será conduzido um estudo de simulação semelhante ao descrito previamente para a distribuição Normal, exceto que, neste caso, os quantis da distribuição amostral serão comparados com os quantis teóricos da Gumbel, dados por
+Para confirmar que a Gumbel se aproxima melhor como distribuição
+amostral do máximo, será conduzido um estudo de simulação semelhante ao
+descrito previamente para a distribuição Normal, exceto que, neste caso,
+os quantis da distribuição amostral serão comparados com os quantis
+teóricos da Gumbel, dados por
 
 $$
 F_G^{-1}(i/(n+1)) = -\text{log}(-\text{log}(i/(n+1)))
@@ -77,20 +100,42 @@ $$
 
 ## 2. Experimentos computacionais
 
-```{r rascunhos_simulacao}
+```{r simulacao1}
 
-N <- 1E3
-n <- 10000
-x <- replicate(N, max(rcauchy(n)))
-qqnorm(x)
+N <- 1E4
+n <- 10
+x10 <- replicate(N, max(rnorm(n)))
+qqnorm(x10)
+
 quantis_gumbel <- -log(-log((1:N)/(N+1)))
-plot(quantis_gumbel, sort(x))
-qqplot(quantis_gumbel,x)
-
-y <- replicate(N,mean(rcauchy(n)))
-min(y)
+## Faz a mesma coisa que qqplot
+plot(quantis_gumbel, sort(x10))
 
 
+
+```
+
+```{r simulacao2}
+
+n <- 100
+x100 <- replicate(N, max(rnorm(n)))
+qqnorm(x100)
+qqplot(quantis_gumbel,x100)
+```
+
+```{r simulacao3}
+
+n <- 1000
+x1000 <- replicate(N, max(rnorm(n)))
+qqnorm(x1000)
+qqplot(quantis_gumbel,x1000)
+```
+
+```{r simulacao4}
+n <- 1E4
+x10000 <- replicate(N, max(rnorm(n)))
+qqnorm(x10000)
+qqplot(quantis_gumbel,x10000)
 ```
 
 ## 3. Discussão e conclusões
