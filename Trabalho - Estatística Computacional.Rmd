@@ -29,14 +29,14 @@ editor_options:
 Seja uma amostra aleatória $(Y_1, Y_2, ..., Y_n)$ de uma população com
 distribuição comum $F$. Sabe-se que para amostras suficientemente
 grandes e certas condições de regularidade a distribuição amostral da
-média $\bar Y$ converge para uma distribuição normal, indiferentemente
+média $\bar Y$ converge para uma distribuição Normal, indiferentemente
 da distribuição $F$ da variável. Mas o que acontece com a distribuição
 do máximo $Y_M = \text{max}(Y_1, Y_2, ..., Y_n)?$
 
 Estudar o comportamento do máximo pode ser útil em diversos contextos,
 particularmente no cenário ambiental, em que há interesse em estimar os
 valores máximos de temperatura, nível de poluição e precipitação por
-exemplo.
+exemplo. O tema é tratado na Teoria de valores extremos.
 
 ### 1.1 Justificativa
 
@@ -52,7 +52,7 @@ P(Y_M \leq y) &= P(Y_1 \leq y, ..., Y_n \leq y) \\
 $$
 
 Entretanto, há situações em que a equação em (1) é difícil de ser obtida
-analiticamente, como no caso da distribuição normal. Além disso, nem
+analiticamente, como no caso da distribuição Normal. Além disso, nem
 sempre a distribuição $F$ e/ou seus parâmetros são conhecidos, e
 estimá-los poderia levar a erros significativos. Desse modo, estimar a
 distribuição de $Y_M$ diretamente, desconsiderando a distribuição da
@@ -73,7 +73,7 @@ Este algoritmo será usado para diferentes tamanhos de amostra (n = 10, n
 = 100, n = 1000 e n = 10000), a fim de averiguar se as distribuições
 amostrais se aproximam da normalidade para valores crescentes de n. No
 fim, será demonstrado que a distribuição amostral do máximo $Y_M$ não é
-normal, possuindo uma assimetria positiva significativa.
+Normal, possuindo uma assimetria positiva significativa.
 
 ### 1.3 Distribuição de Gumbel
 
@@ -87,7 +87,7 @@ F_G(t;a,b) = \text{exp}\left\{- \text{exp} \left(-\frac{t-\mu}{\beta} \right) \r
 $$
 
 em que $\mu$ e $\beta$ são os parâmetros de locação e escala análogos à
-média e desvio padrão da normal.
+média e desvio padrão da Normal.
 
 Para confirmar que a Gumbel é uma melhor aproximação para a distribuição
 amostral do máximo, será conduzido um estudo de simulação semelhante ao
@@ -101,7 +101,11 @@ $$
 
 ## 2. Experimentos computacionais
 
-### Distribuição do máximo para amostras normais padrão (n = 10, n = 100, n = 1000 e n = 10000)
+### 2.1 Simulações de máximos amostrais da distribuição Normal padrão
+
+A seguir, é analisado, por simulação, o comportamento da distribuição
+dos máximos para amostras de uma Normal padrão, para tamanhos de amostra
+$n = 10$, $n = 100$, $n = 1000$ e $n = 10000$.
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Pacotes 
@@ -158,7 +162,7 @@ for (n in tam_ams) {
 }
 ```
 
-### Qq-plots da normal
+#### Qq-plots da Normal
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Qq-plots
@@ -175,7 +179,11 @@ amostral dos máximos não tem boa aderência à normal, apresentando
 desvios mais significativos nas extremidades à medida que se aumenta o
 tamanho de amostra.
 
-### Simulações com a distribuição de Gumbel
+#### Comparação da distribuição amostral dos máximos com a distribuição de Gumbel
+
+A seguir, verifica-se por simulação a aderência da distribuição amostral
+dos máximos de uma distribuição Normal padrão à distribuição de Gumbel,
+para os tamanhos de amostra já citados.
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Função para gerar qq-plot de Gumbel e ajustar reta
@@ -212,7 +220,7 @@ for (n in tam_ams) {
 
 Uma visualização dos gráficos comparando os quantis dos máximos
 amostrais com os da distribuição de Gumbel sugere uma melhor aderência
-dos máximos a esta, em relação à normal. Ainda se pode notar alguma
+dos máximos a esta, em relação à Normal. Ainda se pode notar alguma
 tendência a divergência nos quantis superiores, no entanto, de modo
 geral, a proximidade entre as duas distribuições é mais satisfatória.
 
@@ -242,7 +250,7 @@ amostra, aumentando à medida que a própria amostra assume tamanhos
 maiores. Por sua vez, o estimador de $\beta$ apresenta uma diminuição
 gradativa conforme o aumento do tamanho de amostra.
 
-### 2.1 Simulações de máximos amostrais de outras distribuições
+### 2.2 Simulações de máximos amostrais de outras distribuições
 
 A seguir, é testada, por simulação, a aderência da distribuição amostral
 dos máximos de diferentes distribuições populacionais à distribuição de
@@ -296,7 +304,11 @@ for (n in tam_ams) {
 }
 ```
 
-No caso de uma população com distribuição Gama de parâmetros $\alpha = 6$ e $\beta = 3$, verifica-se que, apesar de uma boa aderência do gráfico quantil-quantil até aproximadamente a mediana, os gráficos sugerem uma oscilação mais notável para fora da linearidade nos quantis superiores.
+No caso de uma população com distribuição Gama de parâmetros
+$\alpha = 6$ e $\beta = 3$, verifica-se que, apesar de uma boa aderência
+do gráfico quantil-quantil até aproximadamente a mediana, os gráficos
+sugerem uma oscilação mais notável para fora da linearidade nos quantis
+superiores.
 
 #### Distribuição Qui-quadrado (25)
 
@@ -319,7 +331,9 @@ for (n in tam_ams) {
 }
 ```
 
-Para uma distribuição Qui-quadrado com 25 graus de liberdade, como no caso da Gama, é possível observar um comportamento oscilatório na distribuição dos quantis superiores, mas possivelmente menos acentuados.
+Para uma distribuição Qui-quadrado com 25 graus de liberdade, como no
+caso da Gama, é possível observar um comportamento oscilatório na
+distribuição dos quantis superiores, mas possivelmente menos acentuados.
 
 #### Distribuição F de Snedecor (20,5)
 
@@ -342,7 +356,9 @@ for (n in tam_ams) {
 }
 ```
 
-No caso de uma população com distribuição F de Snedecor, com 20 e 5 graus de liberdade, o modelo Gumbel é visivelmente inadequado para abranger a distribuição dos máximos amostrais.
+No caso de uma população com distribuição F de Snedecor, com 20 e 5
+graus de liberdade, o modelo Gumbel é visivelmente inadequado para
+abranger a distribuição dos máximos amostrais.
 
 #### Distribuição Cauchy padrão
 
@@ -366,7 +382,7 @@ for (n in tam_ams) {
 }
 ```
 
-Ao contrário dos máximos de amostras de uma distribuição normal, os
+Ao contrário dos máximos de amostras de uma distribuição Normal, os
 máximos amostrais de uma Cauchy não se mostram satisfatoriamente
 modelados pela distribuição de Gumbel, apresentando valores muito mais
 extremos nos quantis superiores.
@@ -393,9 +409,13 @@ crescimento do estimador do parâmetro $\mu$ de Gumbel acompanhando o
 crescimento do tamanho das amostras obtidas a partir de uma população
 Normal padrão.
 
-A modelagem da distribuição dos máximos amostrais com a Gumbel funciona para outras distribuições além da Normal, como se pôde verificar com a Exponencial, a Gama e a Qui-quadrado, apenas com a ressalva de eventuais oscilações nas regiões superiores de cada distribuição. Cabe ressaltar, contudo, que a distribuição de Gumbel não modela
-satisfatoriamente os máximos amostrais de qualquer distribuição. Em
-alguns casos, como no da distribuição de Cauchy, os máximos amostrais
-apresentam ainda desvios significativos, e mesmo no caso de outras
-distribuições, como a F de Snedecor, conforme os graus de liberdade, não
-há boa aderência à distribuição Gumbel.
+A modelagem da distribuição dos máximos amostrais com a Gumbel funciona
+para outras distribuições além da Normal, como se pôde verificar com a
+Exponencial, a Gama e a Qui-quadrado, apenas com a ressalva de eventuais
+oscilações nas regiões superiores de cada distribuição. Cabe ressaltar,
+contudo, que a distribuição de Gumbel não modela satisfatoriamente os
+máximos amostrais de qualquer distribuição. Em alguns casos, como no da
+distribuição de Cauchy, os máximos amostrais apresentam ainda desvios
+significativos, e mesmo no caso de outras distribuições, como a F de
+Snedecor, conforme os graus de liberdade, não há boa aderência à
+distribuição Gumbel.
