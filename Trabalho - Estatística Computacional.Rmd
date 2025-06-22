@@ -101,7 +101,7 @@ $$
 
 ## 2. Experimentos computacionais
 
-#### Análise do comportamento das distribuições amostrais do máximo para amostras normais padrão de tamanho n = 10, n = 100, n = 1000 e n = 10000
+### Distribuição do máximo para amostras normais padrão (n = 10, n = 100, n = 1000 e n = 10000)
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Pacotes 
@@ -158,10 +158,10 @@ for (n in tam_ams) {
 }
 ```
 
-#### Qq-plots da Normal
+### Qq-plots da normal
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
-# QQ-plots
+# Qq-plots
 par(mfrow = c(2, 2))
 for (n in tam_ams) {
   qqnorm(maximos[[as.character(n)]], main = paste("n =", n), 
@@ -175,10 +175,10 @@ amostral dos máximos não tem boa aderência à normal, apresentando
 desvios mais significativos nas extremidades à medida que se aumenta o
 tamanho de amostra.
 
-#### Simulações com a distribuição de Gumbel
+### Simulações com a distribuição de Gumbel
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
-# Função para gerar QQ-plot de Gumbel e ajustar reta
+# Função para gerar qq-plot de Gumbel e ajustar reta
 qqplot_gumbel <- function(x, y) {
   dados_ord <- sort(x)
   n <- length(dados_ord)
@@ -202,7 +202,7 @@ qqplot_gumbel <- function(x, y) {
          bty = "n")
 }
 
-# Gráficos QQ-plot de Gumbel
+# Gráficos qq-plot da Gumbel
 par(mfrow = c(2, 2))
 for (n in tam_ams) {
   dados <- maximos[[as.character(n)]]
