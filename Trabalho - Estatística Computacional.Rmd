@@ -172,7 +172,7 @@ for (n in tam_ams) {
 }
 ```
 
-### Simulações com a distribuição de Gumbel 
+### Simulações com a distribuição de Gumbel
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Função para gerar QQ-plot de Gumbel e ajustar reta
@@ -204,6 +204,30 @@ par(mfrow = c(2, 2))
 for (n in tam_ams) {
   dados <- maximos[[as.character(n)]]
   qqplot_gumbel(dados, n)
+}
+```
+
+### Estimativas para os parâmetros  $\mu$  e $\beta$ da distribuição de Gumbel
+
+Os parâmetros $\mu$ e $\beta$ para cada tamanho de amostra podem ser
+estimados pelo **intercepto** e pela **inclinação** da reta do gráfico
+quantil-quantil, respectivamente. Estes parâmetros são calculados com
+base na regressão linear dos máximos amostrais ordenados em função dos
+quantis correspondentes da distribuição Gumbel padrão.
+
+```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+qqgumbel <- -log(-log(1:reps/(reps+1)))
+
+lm(sort(maximos[[1]]) ~ qqgumbel)
+lm(sort(maximos[[2]]) ~ qqgumbel)
+lm(sort(maximos[[3]]) ~ qqgumbel)
+lm(sort(maximos[[4]]) ~ qqgumbel)
+
+## Alternativamente
+
+for (i in 1:length(maximos)) {
+  param <- lm(sort(maximos[[i]]) ~ qqgumbel)
+  cat("n =", as.numeric(names(maximos[i])) ,"\nmu =", param[[1]][[1]], "\nbeta =", param[[1]][[2]], "\n\n")
 }
 ```
 
