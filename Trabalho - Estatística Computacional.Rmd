@@ -53,10 +53,10 @@ $$
 
 Entretanto, há situações em que a equação em (1) é difícil de ser obtida
 analiticamente, como no caso da distribuição normal. Além disso, nem
-sempre a distribuição $F$ e/ou seus parâmetros são conhecidos, e estimá-los poderia
-levar a erros significativos. Desse modo, estimar a distribuição de
-$Y_M$ diretamente, desconsiderando a distribuição da população, é mais
-adequado.
+sempre a distribuição $F$ e/ou seus parâmetros são conhecidos, e
+estimá-los poderia levar a erros significativos. Desse modo, estimar a
+distribuição de $Y_M$ diretamente, desconsiderando a distribuição da
+população, é mais adequado.
 
 ### 1.2 Distribuição amostral do máximo
 
@@ -101,42 +101,110 @@ $$
 
 ## 2. Experimentos computacionais
 
-```{r simulacao1}
+Análise do comportamento das distribuições amostrais do máximo para
+amostras normais padrão de tamanho n = 10, n = 100, n = 1000 e n =
+10000:
 
-N <- 1E4
-n <- 10
-x10 <- replicate(N, max(rnorm(n)))
-qqnorm(x10)
+```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Pacotes 
+require(ggplot2)
+require(nortest)
 
-quantis_gumbel <- -log(-log((1:N)/(N+1)))
-## Faz a mesma coisa que qqplot
-plot(quantis_gumbel, sort(x10))
+# Definindo a semente para garantir reprodutibilidade
+set.seed(123)
 
+# Tamanhos de amostra
+tam_ams <- c(10, 100, 1000, 10000)
 
+# Número de repetições
+reps <- 1000
 
+# Armazenamento
+maximos <- list()
+
+for (n in tam_ams) {
+  maximos[[as.character(n)]] <- replicate(reps, max(rnorm(n)))
+}
+
+# Histograma das distribuições amostrais
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  hist(maximos[[as.character(n)]], main = paste("n =", n), ylab = "Densidade",
+       xlab = "Máximo", probability = TRUE)
+}
 ```
 
-```{r simulacao2}
+```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Verificando a normalidade das distribuições
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- maximos[[as.character(n)]]
+  hist(dados, main = paste("n =", n), xlab = "Máximo", ylab = "Densidade",
+       probability = TRUE)
+  media <- mean(dados)
+  desvio <- sd(dados)
+  curve(dnorm(x, media, desvio), col = "red", lwd = 2, add = TRUE)
+}
 
-n <- 100
-x100 <- replicate(N, max(rnorm(n)))
-qqnorm(x100)
-qqplot(quantis_gumbel,x100)
+# Verificando normalidade via teste de Anderson-Darling
+for (n in tam_ams) {
+  cat("Teste de Anderson-Darling para n =", n, "\n")
+  dados <- maximos[[as.character(n)]]
+  result <- ad.test(dados)
+  print(result)
+   if (result$p.value < 0.05) {
+    cat("Rejeita-se a normalidade\n\n")
+  } else {
+    cat("Não se rejeita a normalidade\n\n")
+  }
+}
 ```
 
-```{r simulacao3}
+### Qq-plots da Normal
 
-n <- 1000
-x1000 <- replicate(N, max(rnorm(n)))
-qqnorm(x1000)
-qqplot(quantis_gumbel,x1000)
+```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# QQ-plots
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  qqnorm(maximos[[as.character(n)]], main = paste("n =", n), 
+         xlab = "Quantis teóricos", ylab = "Quantis amostrais")
+  qqline(maximos[[as.character(n)]], col = "red", lwd = 2)
+}
 ```
 
-```{r simulacao4}
-n <- 1E4
-x10000 <- replicate(N, max(rnorm(n)))
-qqnorm(x10000)
-qqplot(quantis_gumbel,x10000)
+### Simulações com a distribuição de Gumbel 
+
+```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Função para gerar QQ-plot de Gumbel e ajustar reta
+qqplot_gumbel <- function(x, y) {
+  dados_ord <- sort(x)
+  n <- length(dados_ord)
+  # Quantis teóricos da Gumbel
+  p <- (1:n) / (n + 1)
+  quantis_gumbel <- -log(-log(p))
+  # Ajuste linear
+  ajuste <- lm(dados_ord ~ quantis_gumbel)
+  # Estimativas do parâmetro da Gumbel
+  beta <- coef(ajuste)[2]
+  mi <- coef(ajuste)[1]
+  # Gráfico
+  plot(quantis_gumbel, dados_ord,
+       main = paste("n =", y),
+       xlab = "Quantis teóricos",
+       ylab = "Quantis amostrais",
+       pch = 20, col = "black")
+  abline(ajuste, col = "red", lwd = 2)
+  legend("topleft",
+         legend = paste("μ ≈", round(mi, 2), "\nβ ≈", round(beta, 2)),
+         bty = "n")
+}
+
+# Gráficos QQ-plot de Gumbel
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- maximos[[as.character(n)]]
+  qqplot_gumbel(dados, n)
+}
 ```
 
 ## 3. Discussão e conclusões
