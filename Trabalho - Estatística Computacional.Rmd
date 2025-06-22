@@ -170,6 +170,11 @@ for (n in tam_ams) {
 }
 ```
 
+Uma visualização dos gráficos quantil-quantil sugere que a distribuição
+amostral dos máximos não tem boa aderência à normal, apresentando
+desvios mais significativos nas extremidades à medida que se aumenta o
+tamanho de amostra.
+
 #### Simulações com a distribuição de Gumbel
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
@@ -205,7 +210,11 @@ for (n in tam_ams) {
 }
 ```
 
-#### Estimativas para os parâmetros $\mu$ e $\beta$ da distribuição de Gumbel
+Uma visualização dos gráficos comparando os quantis dos máximos
+amostrais com os da distribuição de Gumbel sugere uma melhor aderência
+dos máximos a esta, em relação à normal. Ainda se pode notar alguma
+tendência a divergência nos quantis superiores, no entanto, de modo
+geral, a proximidade entre as duas distribuições é mais satisfatória.
 
 Os parâmetros $\mu$ e $\beta$ para cada tamanho de amostra podem ser
 estimados pelo **intercepto** e pela **inclinação** da reta do gráfico
@@ -216,17 +225,79 @@ quantis correspondentes da distribuição Gumbel padrão.
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 qqgumbel <- -log(-log(1:reps/(reps+1)))
 
-lm(sort(maximos[[1]]) ~ qqgumbel)
-lm(sort(maximos[[2]]) ~ qqgumbel)
-lm(sort(maximos[[3]]) ~ qqgumbel)
-lm(sort(maximos[[4]]) ~ qqgumbel)
-
-## Alternativamente
-
 for (i in 1:length(maximos)) {
   param <- lm(sort(maximos[[i]]) ~ qqgumbel)
-  cat("n =", as.numeric(names(maximos[i])) ,"\nmu =", param[[1]][[1]], "\nbeta =", param[[1]][[2]], "\n\n")
+  cat("n =", as.numeric(names(maximos[i])) ,"\nμ ≈", round(param[[1]][[1]],2), "\nβ ≈", round(param[[1]][[2]],2), "\n\n")
+}
+
+rm(i)
+```
+
+Constata-se que ambos os parâmetros estimados para a Gumbel são afetados
+pelo tamanho da amostra. É importante ressaltar que, ao contrário do
+estimador para o parâmetro $\mu$ de uma distribuição Normal, o estimador
+de $\mu$ da distribuição de Gumbel, embora também corresponda a uma
+medida de tendência central da distribuição, é dependente do tamanho da
+amostra, aumentando à medida que a própria amostra assume tamanhos
+maiores. Por sua vez, o estimador de $\beta$ apresenta uma diminuição
+gradativa conforme o aumento do tamanho de amostra.
+
+### Simulações de máximos amostrais de distribuição Cauchy
+
+A seguir, é testada, por simulação, a aderência da distribuição amostral
+dos máximos de uma distribuição Cauchy padrão à distribuição de Gumbel,
+com tamanhos de amostra $n = 10$, $n = 100$, $n = 1000$ e $n = 10000$.
+
+```{r error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Semente
+set.seed(123)
+
+# Armazenamento
+max_cauchy <- list()
+
+# Amostras dos máximos da Cauchy
+for (n in tam_ams) {
+  max_cauchy[[as.character(n)]] <- replicate(reps, max(rcauchy(n)))
+}
+
+# Gráficos da Cauchy
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- max_cauchy[[as.character(n)]]
+  qqplot_gumbel(dados, n)
 }
 ```
 
+Ao contrário dos máximos de amostras de uma distribuição normal, os
+máximos amostrais de uma Cauchy não se mostram satisfatoriamente
+modelados pela distribuição de Gumbel, apresentando valores muito mais
+extremos nos quantis superiores.
+
 ## 3. Discussão e conclusões
+
+No estudo introdutório da Teoria de valores extremos, é importante
+demarcar diferenças importantes para com o caso da média amostral. Para
+qualquer população sob certas hipóteses, o Teorema central do limite
+assegura que a distribuição das médias amostrais converge para uma
+Normal à medida que se aumenta o tamanho da amostra. Para o caso dos
+extremos amostrais, como o máximo aqui estudado, a distribuição Normal
+não é o limite.
+
+No caso dos máximos de amostras de uma Normal, as simulações indicam que
+a distribuição de Gumbel modela bem as distribuições amostrais, ainda
+apresentando algumas tendências a desvios nos quantis superiores.
+
+Ainda, espera-se que, à medida que o tamanho de amostra aumente, a
+ocorrência de pelo menos um valor extremo se torne mais provável, e
+consequentemente amostras maiores tendam a apresentar máximos maiores.
+Essa expectativa se confirmou nas simulações, verificando-se no
+crescimento do estimador do parâmetro $\mu$ de Gumbel acompanhando o
+crescimento do tamanho das amostras obtidas a partir de uma população
+Normal padrão.
+
+Cabe ressaltar ainda que a distribuição de Gumbel não modela
+satisfatoriamente os máximos amostrais de qualquer distribuição. Em
+alguns casos, como no da distribuição de Cauchy, os máximos amostrais
+apresentam ainda desvios significativos, e mesmo no caso de outras
+distribuições, como a F de Snedecor, conforme os graus de liberdade, não
+há boa aderência à distribuição Gumbel.
