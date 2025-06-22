@@ -205,7 +205,7 @@ for (n in tam_ams) {
 }
 ```
 
-### Estimativas para os parâmetros $\mu$ e $\beta$ da distribuição de Gumbel
+#### Estimativas para os parâmetros $\mu$ e $\beta$ da distribuição de Gumbel
 
 Os parâmetros $\mu$ e $\beta$ para cada tamanho de amostra podem ser
 estimados pelo **intercepto** e pela **inclinação** da reta do gráfico
