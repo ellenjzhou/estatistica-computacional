@@ -242,11 +242,109 @@ amostra, aumentando à medida que a própria amostra assume tamanhos
 maiores. Por sua vez, o estimador de $\beta$ apresenta uma diminuição
 gradativa conforme o aumento do tamanho de amostra.
 
-### Simulações de máximos amostrais de distribuição Cauchy
+### 2.1 Simulações de máximos amostrais de outras distribuições
 
 A seguir, é testada, por simulação, a aderência da distribuição amostral
-dos máximos de uma distribuição Cauchy padrão à distribuição de Gumbel,
-com tamanhos de amostra $n = 10$, $n = 100$, $n = 1000$ e $n = 10000$.
+dos máximos de diferentes distribuições populacionais à distribuição de
+Gumbel, com tamanhos de amostra $n = 10$, $n = 100$, $n = 1000$ e
+$n = 10000$.
+
+#### Distribuição exponencial ($\lambda = 1$)
+
+```{r error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Semente
+set.seed(123)
+
+# Armazenamento
+max_exp <- list()
+
+
+for (n in tam_ams) {
+  max_exp[[as.character(n)]] <- replicate(reps, max(rexp(n)))
+}
+
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- max_exp[[as.character(n)]]
+  qqplot_gumbel(dados, n)
+}
+```
+
+No caso dos máximos amostrais de uma população Exponencial, a
+distribuição também exibe boa aderência à Gumbel de modo geral,
+apresentando, como no caso da Normal, alguns desvios nos valores
+superiores da distribuição.
+
+#### Distribuição Gamma (6,3)
+
+```{r error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Semente
+set.seed(123)
+
+# Armazenamento
+max_gamma <- list()
+
+
+for (n in tam_ams) {
+  max_gamma[[as.character(n)]] <- replicate(reps, max(rgamma(n,6,3)))
+}
+
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- max_gamma[[as.character(n)]]
+  qqplot_gumbel(dados, n)
+}
+```
+
+No caso de uma população com distribuição Gama de parâmetros $\alpha = 6$ e $\beta = 3$, verifica-se que, apesar de uma boa aderência do gráfico quantil-quantil até aproximadamente a mediana, os gráficos sugerem uma oscilação mais notável para fora da linearidade nos quantis superiores.
+
+#### Distribuição Qui-quadrado (25)
+
+```{r error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Semente
+set.seed(123)
+
+# Armazenamento
+max_chisq <- list()
+
+
+for (n in tam_ams) {
+  max_chisq[[as.character(n)]] <- replicate(reps, max(rchisq(n,25)))
+}
+
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- max_chisq[[as.character(n)]]
+  qqplot_gumbel(dados, n)
+}
+```
+
+Para uma distribuição Qui-quadrado com 25 graus de liberdade, como no caso da Gama, é possível observar um comportamento oscilatório na distribuição dos quantis superiores, mas possivelmente menos acentuados.
+
+#### Distribuição F de Snedecor (20,5)
+
+```{r error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+# Semente
+set.seed(123)
+
+# Armazenamento
+max_f <- list()
+
+
+for (n in tam_ams) {
+  max_f[[as.character(n)]] <- replicate(reps, max(rf(n,20,5)))
+}
+
+par(mfrow = c(2, 2))
+for (n in tam_ams) {
+  dados <- max_f[[as.character(n)]]
+  qqplot_gumbel(dados, n)
+}
+```
+
+No caso de uma população com distribuição F de Snedecor, com 20 e 5 graus de liberdade, o modelo Gumbel é visivelmente inadequado para abranger a distribuição dos máximos amostrais.
+
+#### Distribuição Cauchy padrão
 
 ```{r error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Semente
@@ -295,7 +393,7 @@ crescimento do estimador do parâmetro $\mu$ de Gumbel acompanhando o
 crescimento do tamanho das amostras obtidas a partir de uma população
 Normal padrão.
 
-Cabe ressaltar ainda que a distribuição de Gumbel não modela
+A modelagem da distribuição dos máximos amostrais com a Gumbel funciona para outras distribuições além da Normal, como se pôde verificar com a Exponencial, a Gama e a Qui-quadrado, apenas com a ressalva de eventuais oscilações nas regiões superiores de cada distribuição. Cabe ressaltar, contudo, que a distribuição de Gumbel não modela
 satisfatoriamente os máximos amostrais de qualquer distribuição. Em
 alguns casos, como no da distribuição de Cauchy, os máximos amostrais
 apresentam ainda desvios significativos, e mesmo no caso de outras
