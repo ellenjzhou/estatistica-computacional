@@ -419,3 +419,8 @@ distribuição de Cauchy, os máximos amostrais apresentam ainda desvios
 significativos, e mesmo no caso de outras distribuições, como a F de
 Snedecor, conforme os graus de liberdade, não há boa aderência à
 distribuição Gumbel.
+
+## Referências
+
+-   COLES, S. G. Learning about Extremes. **Teaching Statistics**. v.
+    16, n. 1, 1994, p. 23-25.
