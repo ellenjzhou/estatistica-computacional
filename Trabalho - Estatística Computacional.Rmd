@@ -101,9 +101,7 @@ $$
 
 ## 2. Experimentos computacionais
 
-Análise do comportamento das distribuições amostrais do máximo para
-amostras normais padrão de tamanho n = 10, n = 100, n = 1000 e n =
-10000:
+#### Análise do comportamento das distribuições amostrais do máximo para amostras normais padrão de tamanho n = 10, n = 100, n = 1000 e n = 10000
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Pacotes 
@@ -160,7 +158,7 @@ for (n in tam_ams) {
 }
 ```
 
-### Qq-plots da Normal
+#### Qq-plots da Normal
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # QQ-plots
@@ -172,7 +170,11 @@ for (n in tam_ams) {
 }
 ```
 
+<<<<<<< HEAD
 ### Simulações com a distribuição de Gumbel
+=======
+#### Simulações com a distribuição de Gumbel
+>>>>>>> 4a8ee08098ed0d747db45d9162c1688ee9865816
 
 ```{r, error=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Função para gerar QQ-plot de Gumbel e ajustar reta
