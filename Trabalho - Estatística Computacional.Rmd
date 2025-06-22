@@ -1,5 +1,6 @@
 ---
 title: "Extremos"
+subtitle: "CE-312 - Estatística Computacional"
 author: 
   - name: Ellen Jieyi Zhou
   - name: Leonardo Gonçalves Fischer
@@ -39,7 +40,7 @@ exemplo.
 
 ### 1.1 Justificativa
 
-Nesse sentido, é intuitivo obter a distribuição do máximo a partir da
+A princípio, é simples obter a distribuição exata do máximo a partir da
 distribuição $F$ da variável:
 
 $$
@@ -51,8 +52,8 @@ P(Y_M \leq y) &= P(Y_1 \leq y, ..., Y_n \leq y) \\
 $$
 
 Entretanto, há situações em que a equação em (1) é difícil de ser obtida
-analiticamente, como no caso da distribuição Normal. Além disso, nem
-sempre $F$ e/ou seus parâmetros são conhecidos, e estimá-los poderia
+analiticamente, como no caso da distribuição normal. Além disso, nem
+sempre a distribuição $F$ e/ou seus parâmetros são conhecidos, e estimá-los poderia
 levar a erros significativos. Desse modo, estimar a distribuição de
 $Y_M$ diretamente, desconsiderando a distribuição da população, é mais
 adequado.
@@ -68,8 +69,8 @@ Normal? Para verificar isso o seguinte algoritmo pode ser usado:
 4.  Analise o comportamento da distribuição amostral do máximo, usando
     qq-plots (qq-norm).
 
-O algoritmo será usado para diferentes tamanhos de amostra (n = 10, n =
-100, n = 1000 e n = 10000), a fim de averiguar se as distribuições
+Este algoritmo será usado para diferentes tamanhos de amostra (n = 10, n
+= 100, n = 1000 e n = 10000), a fim de averiguar se as distribuições
 amostrais se aproximam da normalidade para valores crescentes de n. No
 fim, será demonstrado que a distribuição amostral do máximo $Y_M$ não é
 normal, possuindo uma assimetria positiva significativa.
@@ -78,8 +79,8 @@ normal, possuindo uma assimetria positiva significativa.
 
 Nesse contexto, uma aproximação melhor é dada pela distribuição de
 *Gumbel*, que faz parte de uma família de distribuições conhecida como
-*distribuição de valor extremo generalizado*, e tem expressão da
-acumulada dada por
+*distribuição de valor extremo generalizado*. Sua função de distribuição
+acumulada é dada por
 
 $$
 F_G(t;a,b) = \text{exp}\left\{- \text{exp} \left(-\frac{t-\mu}{\beta} \right) \right\},
@@ -88,11 +89,11 @@ $$
 em que $\mu$ e $\beta$ são os parâmetros de locação e escala análogos à
 média e desvio padrão da normal.
 
-Para confirmar que a Gumbel se aproxima melhor como distribuição
+Para confirmar que a Gumbel é uma melhor aproximação para a distribuição
 amostral do máximo, será conduzido um estudo de simulação semelhante ao
 descrito previamente para a distribuição Normal, exceto que, neste caso,
 os quantis da distribuição amostral serão comparados com os quantis
-teóricos da Gumbel, dados por
+teóricos da Gumbel padrão ($\mu = 0, \beta = 1$), que são dados por
 
 $$
 F_G^{-1}(i/(n+1)) = -\text{log}(-\text{log}(i/(n+1)))
