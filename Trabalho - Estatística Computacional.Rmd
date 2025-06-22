@@ -63,7 +63,7 @@ população, é mais adequado.
 Então, qual a distribuição amostral do máximo? Seria a distribuição
 Normal? Para verificar isso o seguinte algoritmo pode ser usado:
 
-1.  Gere uma amostra de tamanho n da distribuição Normal(0,1).
+1.  Gere uma amostra aleatória de tamanho n da distribuição Normal(0,1).
 2.  Obtenha o valor máximo da amostra.
 3.  Repita os passos 1 e 2 muitas vezes.
 4.  Analise o comportamento da distribuição amostral do máximo, usando
@@ -98,6 +98,14 @@ teóricos da Gumbel padrão ($\mu = 0, \beta = 1$), que são dados por
 $$
 F_G^{-1}(i/(n+1)) = -\text{log}(-\text{log}(i/(n+1)))
 $$
+
+Além disso, será verificado se a aproximação pela Gumbel é válida para dados provenientes de outras distribuições, usando o algoritmo descrito na seção anterior, mas ao invés de gerar amostras aleatórias da distribuição Normal padrão, serão geradas amostras aleatórias das distribuições selecionadas. Em resumo, o algoritmo é:
+
+1.  Gere uma amostra aleatória de tamanho n da distribuição escolhida.
+2.  Obtenha o valor máximo da amostra.
+3.  Repita os passos 1 e 2 muitas vezes.
+4.  Analise o comportamento da distribuição amostral do máximo, usando
+    qq-plots.
 
 ## 2. Experimentos computacionais
 
